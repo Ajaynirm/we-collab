@@ -23,24 +23,43 @@ export async function addTask(req, res) {
   
 
 export async function getTasks(req,res) {
+  try{
     const db = await openDb();
     const tasks = await db.all('SELECT * FROM tasks ORDER BY created_at DESC');
-    return tasks;
+    return res.status(200).json(tasks);
+  }catch(error){
+    return res.status(404).json({"message":"Failed to get all tasks"})
+  }
   }
 
 export const getTaskById= async(req,res)=>{
     const {id} =req.params
-
-const db = await openDb();
-return await db.get(`SELECT * FROM tasks WHERE id = ?`, [id]);
+    try{
+      const db = await openDb();
+      const task = await db.get(`SELECT * FROM tasks WHERE id = ?`, [id]);
+      return res.status(200).json(task);
+    }catch(error){
+      return res.status(500);
+    }
 }  
+
 
 export const updateTask = async(req,res)=>{
 
 }
 
 export const deleteTask = async(req,res)=>{
-
+  const {id} =req.params
+  try{
+    const db = await openDb();
+    const task = await db.get(`DELETE FROM tasks WHERE id = ?`, [id]);
+    
+    return res.status(200).json({ message: "Task deleted successfully", id });
+  
+  }catch(error){
+    console.error("❌ DELETE /api/tasks error:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
 }
 
 export const filterTask=async(req,res)=>{

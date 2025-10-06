@@ -9,7 +9,7 @@ router.post("/tasks",addTask);
 
 router.get("/tasks/:id", getTaskById);
 router.patch("/tasks/:id", updateTask);
-router.delete("/task/:id", deleteTask);
+router.delete("/tasks/:id", deleteTask);
 
 
 export default router;
