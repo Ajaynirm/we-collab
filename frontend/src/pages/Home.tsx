@@ -1,11 +1,21 @@
-import React from 'react'
-  
-  const Home = () => {
-    return (
+import { Button } from "@/components/ui/button";
+import NavBar from "./NavBar";
+
+const Home = () => {
+  return (
+    <div className="flex flex-col ">
+      <NavBar />
       <div>
-        <h1 className="text-3xl font-bold underline">🏠 Home Page</h1>
+      <h1 className="">🏠 Home Page</h1>
+      <Button>Click</Button>
       </div>
-    )
-  }
-  
-  export default Home;
+      
+      
+    </div>
+
+  );
+};
+
+export default Home;
+
+

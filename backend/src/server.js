@@ -5,8 +5,9 @@ import cors from "cors";
 import healthRouter from "./routes/health.js";
 import taskRoute from "./routes/task.route.js"
 import { initDB } from "./config/initDB.js";
-import { swaggerUi, swaggerSpec } from "../swagger.js";
-
+import { swaggerUi, swaggerSpec } from "./swagger.js";
+import { rateLimiter } from "./rateLimitter.js";
+import helmet from "helmet";
 
 dotenv.config();
 
@@ -17,12 +18,14 @@ const allowedOriginsForRoute = ['http://localhost:8080'];
 
 initDB()
 
+app.use(helmet());
+app.use(rateLimiter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
 
-app.use("/api",taskRoute);
+app.use("/",taskRoute);
 app.use("/health", healthRouter);
 
 app.get("/",(req,res)=>{return res.json({"message":"success"})});
