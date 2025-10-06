@@ -15,6 +15,16 @@ export async function initDB() {
     );
   `);
 
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name varchar(50) NOT NULL,
+      email varchar(50) NOT NULL,
+      password TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    `);
+
   console.log('✅ Database initialized successfully.');
   return db;
 }

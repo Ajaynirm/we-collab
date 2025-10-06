@@ -8,6 +8,8 @@ import { initDB } from "./config/initDB.js";
 import { swaggerUi, swaggerSpec } from "./swagger.js";
 import { rateLimiter } from "./rateLimitter.js";
 import helmet from "helmet";
+import passport from "./config/passport.js";
+import authRoute from "./routes/auth.route.js";
 
 dotenv.config();
 
@@ -24,6 +26,9 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
+app.use(passport.initialize());
+
+app.use("/auth", authRoute);
 
 app.use("/",taskRoute);
 app.use("/health", healthRouter);
