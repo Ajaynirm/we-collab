@@ -5,16 +5,19 @@ import cors from "cors";
 import healthRouter from "./routes/health.js";
 import taskRoute from "./routes/task.route.js"
 import { initDB } from "./config/initDB.js";
+import { swaggerUi, swaggerSpec } from "../swagger.js";
+
 
 dotenv.config();
 
 const app=express();
-const PORT = process.env.PORT || 5000;
+
 
 const allowedOriginsForRoute = ['http://localhost:8080'];
 
 initDB()
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
