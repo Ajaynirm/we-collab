@@ -24,8 +24,6 @@ export async function initDB() {
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
     `);
-
-  console.log('✅ Database initialized successfully.');
   return db;
 }
 

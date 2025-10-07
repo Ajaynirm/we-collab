@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { openDb } from "../config/db.js";
 import { generateToken } from "../middleware/auth.middleware.js";
+import passport from "passport";
 
 export const register = async (req, res) => {
   try {
@@ -23,13 +24,18 @@ export const register = async (req, res) => {
   }
 };
 
-export const login = async (req, res) => {
-  try {
-    const token = generateToken(req.user);
-    return res.json({ message: "Login successful", token });
-  } catch (error) {
-    return res.status(500).json({ message: "Internal server error " });
-  }
+export const login = async (req, res, next) => {
+  passport.authenticate("local", { session: false }, (err, user, info) => {
+   
+    if (err) return res.status(500).json({ message: "Internal error" });
+    if (!user) return res.status(401).json({ message: info?.message || "Unauthorized" });
+    
+
+    const token = generateToken(user);
+    return res.status(200).json({ message: "Login successful", token });
+  })(req, res, next);
 };
+
+
 
 

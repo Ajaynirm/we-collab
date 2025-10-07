@@ -103,8 +103,8 @@ router.post("/register", register);
  *       500:
  *         description: Internal server error
  */
-router.post("/login", passport.authenticate("local", { session: false }) , login);
-
+router.post("/login", login);
+//, passport.authenticate("local", { session: false }) 
 // Protected route example
 router.get("/profile", authenticateJWT, (req, res) => {
   res.json({ message: `Hello ${req.user.id}` });

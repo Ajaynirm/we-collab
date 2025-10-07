@@ -6,22 +6,26 @@ import { openDb } from '../config/db.js';
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import dotenv from "dotenv";
 
-dotenv.config();
+
+dotenv.config({debug: false});
 
 // Local login with email/password
 passport.use(
-  new LocalStrategy(
-    { usernameField: "email" },
-    async (email, password, done) => {
-        const db = await openDb();
-        const user = await db.get(`SELECT * from users where email=?`,[email]);
-      if (!user) return done(null, false, { message: "User not found" });
+  new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
+    try {
+      const db = await openDb();
+      const user = await db.get(`SELECT * FROM users WHERE email=?`, [email]);
+      if (!user) return done(null,false, { message: "Email not exists" });
+     
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) return done(null, false, { message: "Invalid password" });
-      return done(null, user);
+      return done(null, user,{message: "Login success"});
+    } catch (err) {
+      return done(err);
     }
-  )
+  })
 );
+
 
 // JWT verification
 passport.use(

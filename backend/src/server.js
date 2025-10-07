@@ -11,7 +11,7 @@ import helmet from "helmet";
 import passport from "./config/passport.js";
 import authRoute from "./routes/auth.route.js";
 
-dotenv.config();
+dotenv.config({debug: false});
 
 const app=express();
 
